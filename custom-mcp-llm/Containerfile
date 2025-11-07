@@ -11,4 +11,4 @@ ENV DEFAULT_STOP_ID="HSL:1080701"
 
 EXPOSE 8000
 
-ENTRYPOINT [ "python", "helsinki_transport.py" ]
+ENTRYPOINT [ "python", "draft_finnish.py" ]
