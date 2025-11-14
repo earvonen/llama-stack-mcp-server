@@ -1,6 +1,7 @@
 from typing import Any, Optional
 import httpx
 import os
+import json
 from datetime import datetime, timedelta
 from mcp.server.fastmcp import FastMCP
 
@@ -189,6 +190,10 @@ async def get_timetable(
     """
 
     data = await make_graphql_request(query)
+
+    # Print the full response
+    print(f"[get_timetable] Full response received:")
+    print(json.dumps(data, indent=2, ensure_ascii=False))
 
     if not data or "data" not in data or not data["data"].get("stop"):
         return f"Unable to fetch timetable for stop ID: {stop_id}"
