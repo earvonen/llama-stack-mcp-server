@@ -52,7 +52,6 @@ async def draft_finnish(
     *,
     temperature: float = 0.7,
     max_tokens: int = 1024,
-    top_p: float = 0.9,
     system_prompt: Optional[str] = None,
 ) -> str:
     """Forward a prompt to the configured vLLM endpoint and return the response text."""
@@ -76,7 +75,6 @@ async def draft_finnish(
         "messages": _build_messages(prompt, system_prompt),
         "temperature": temperature,
         "max_tokens": max_tokens,
-        "top_p": top_p,
     }
 
     try:
