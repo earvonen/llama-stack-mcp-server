@@ -66,10 +66,10 @@ async def main():
         await test_get_stop_info()
         await test_custom_stop()
 
-        print("✅ All tests completed successfully!")
+        print("[PASS] All tests completed successfully!")
 
     except Exception as e:
-        print(f"❌ Test failed with error: {e}")
+        print(f"[FAIL] Test failed with error: {e}")
         import traceback
         traceback.print_exc()
         return 1

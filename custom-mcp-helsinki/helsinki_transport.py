@@ -154,6 +154,12 @@ async def get_timetable(
         start_time: Start time in seconds from midnight (default: 0 = now)
         time_range: Time range in seconds from start_time (default: 3600 = 1 hour)
     """
+    # Print the full incoming request
+    print(f"[get_timetable] Full request received:")
+    print(f"  stop_id: {stop_id}")
+    print(f"  start_time: {start_time}")
+    print(f"  time_range: {time_range}")
+    
     query = f"""
     {{
       stop(id: "{stop_id}") {{
