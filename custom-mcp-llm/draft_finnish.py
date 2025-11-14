@@ -50,8 +50,8 @@ def _build_messages(prompt: str, system_prompt: Optional[str]) -> list[Dict[str,
 async def draft_finnish(
     prompt: str,
     *,
-    temperature: float = 0.7,
-    max_tokens: int = 1024,
+    temperature: Optional[float] = None,
+    max_tokens: Optional[int] = None,
     system_prompt: Optional[str] = None,
 ) -> str:
     """Forward a prompt to the configured vLLM endpoint and return the response text."""
@@ -70,11 +70,15 @@ async def draft_finnish(
     if api_key:
         headers["Authorization"] = f"Bearer {api_key}"
 
+    # Use defaults if None is provided
+    temp_value = temperature if temperature is not None else 0.7
+    max_tokens_value = max_tokens if max_tokens is not None else 1024
+
     payload: Dict[str, Any] = {
         "model": model,
         "messages": _build_messages(prompt, system_prompt),
-        "temperature": temperature,
-        "max_tokens": max_tokens,
+        "temperature": temp_value,
+        "max_tokens": max_tokens_value,
     }
 
     try:
