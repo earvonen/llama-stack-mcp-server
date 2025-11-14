@@ -70,19 +70,31 @@ async def draft_finnish(
     if api_key:
         headers["Authorization"] = f"Bearer {api_key}"
 
+    # Normalize None values - handle string "None", "null", etc. from JSON/LLM calls
+    def normalize_none(value):
+        """Convert string representations of None to actual None."""
+        if value is None:
+            return None
+        if isinstance(value, str):
+            if value.lower() in ("none", "null", ""):
+                return None
+        return value
+
     # Convert and validate temperature - handle both string and numeric inputs
-    if temperature is not None:
+    normalized_temp = normalize_none(temperature)
+    if normalized_temp is not None:
         try:
-            temp_value = float(temperature)
+            temp_value = float(normalized_temp)
         except (ValueError, TypeError):
             return f"Invalid temperature value: {temperature}. Must be a number."
     else:
         temp_value = 0.7
 
     # Convert and validate max_tokens - handle both string and numeric inputs
-    if max_tokens is not None:
+    normalized_max_tokens = normalize_none(max_tokens)
+    if normalized_max_tokens is not None:
         try:
-            max_tokens_value = int(max_tokens)
+            max_tokens_value = int(normalized_max_tokens)
             if max_tokens_value < 1:
                 return f"Invalid max_tokens value: {max_tokens}. Must be a positive integer."
         except (ValueError, TypeError):
