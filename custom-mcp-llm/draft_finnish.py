@@ -70,9 +70,25 @@ async def draft_finnish(
     if api_key:
         headers["Authorization"] = f"Bearer {api_key}"
 
-    # Use defaults if None is provided
-    temp_value = temperature if temperature is not None else 0.7
-    max_tokens_value = max_tokens if max_tokens is not None else 1024
+    # Convert and validate temperature - handle both string and numeric inputs
+    if temperature is not None:
+        try:
+            temp_value = float(temperature)
+        except (ValueError, TypeError):
+            return f"Invalid temperature value: {temperature}. Must be a number."
+    else:
+        temp_value = 0.7
+
+    # Convert and validate max_tokens - handle both string and numeric inputs
+    if max_tokens is not None:
+        try:
+            max_tokens_value = int(max_tokens)
+            if max_tokens_value < 1:
+                return f"Invalid max_tokens value: {max_tokens}. Must be a positive integer."
+        except (ValueError, TypeError):
+            return f"Invalid max_tokens value: {max_tokens}. Must be an integer."
+    else:
+        max_tokens_value = 1024
 
     payload: Dict[str, Any] = {
         "model": model,
